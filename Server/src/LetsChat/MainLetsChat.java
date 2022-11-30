@@ -185,24 +185,19 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable{
     	String strpeople;
     	String nickName;
     	nickName = tf_username.getText();
-    	
-    	if(tf_username.getText()==""){
-			JOptionPane.showMessageDialog(this, "닉네임을 입력해주세요");
-			return;
-		} 
 
-    	if(ob==bt_rcreate){//방만들기 화면 띄워주기 
-    		
+
+    	if(ob==bt_rcreate){//방만들기 화면 띄워주기
     		sendMsg("150|"+nickName);//대화명 전달
     		System.out.println(tf_username.getText());
     		cr.setVisible(true);
     		//String title = JOptionPane.showInputDialog(this,"방제목:");
     	}
     	else if(ob==bt_renter){//방들어가기 요청
-
     		sendMsg("150|"+nickName);//대화명 전달
     		er.setVisible(true);
     	}
+
     	else if(ob==cr.bt_create)
     	{
     		//방제목을 서버에게 전달
@@ -219,32 +214,33 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable{
     		sendMsg("150|"+nickName);//대화명 전달
     		sendMsg("160|"+roomname);
 
-    		chr.la_roominfo.setText(roomname+"("+strpeople+")");
-    		
-    		sendMsg("175|");//대화방내 인원정보 요청  
 
-    		setVisible(false);
-    		cr.setVisible(false);
-    		chr.setVisible(true); //대화방이동
+    		chr.la_roominfo.setText(roomname+"("+strpeople+")");
+
+    		sendMsg("175|");//대화방내 인원정보 요청
+
+			////start (주석처리함)
+//    		setVisible(false);
+//    		cr.setVisible(false);
+//    		chr.setVisible(true); //대화방이동
+			////end
     	}
     	else if(ob==er.bt_enter) 
     	{
     		roomname = er.tf_roomname.getText();
     		
-    		if(roomname == null){
-    			JOptionPane.showMessageDialog(this, "방을 선택!!");
-    			return;
-    		}
-    		
     		chr.la_roominfo.setText(roomname);//+"("+strpeople+")");
-    		sendMsg("150|"+nickName);//대화명 전달
     		sendMsg("200|"+ roomname);
-    		sendMsg("175|");//대화방내 인원정보 요청
-    		
-    		setVisible(false);
-    		er.setVisible(false);
-    		chr.setVisible(true);
+			sendMsg("150|"+nickName);//대화명 전달
+			sendMsg("175|");//대화방내 인원정보 요청
+
+			////start (주석처리함)
+//    		setVisible(false);
+//    		er.setVisible(false);
+//    		chr.setVisible(true);
+			////end
     	}
+
     	else if(ob==chr.bt_exit){//대화방 나가기 요청
     		
     		sendMsg("400|");
@@ -287,13 +283,14 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable{
 
         		switch(protocol){
 
-        			case "300": 
+        			case "300":
         				chr.ta_chat.append(msgs[1]+"\n");
         				System.out.println(msgs[1]+"\n");
         				chr.ta_chat.setCaretPosition(chr.ta_chat.getText().length());
         				break;
+
         					
-        			case "160"://방만들기 
+        			case "160"://방만들기
 
         				//방정보를 List에 뿌리기
         				if(msgs.length > 1){
@@ -320,8 +317,21 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable{
         				String waitNames[] = msgs[1].split(",");
         				waitInfo.setListData(waitNames);
         				break;*/
-        					
-        			case "200"://대화방 입장
+
+					////start (코드 추가)
+					case "210":
+						er.setVisible(false);
+						chr.setVisible(true);
+						break;
+
+					case "161":
+						setVisible(false);
+						cr.setVisible(false);
+    					chr.setVisible(true); //대화방이동
+						break;
+					////end
+
+					case "200"://대화방 입장
         				chr.ta_chat.append("=========["+msgs[1]+"]님 입장=========\n");
         				chr.ta_chat.setCaretPosition(chr.ta_chat.getText().length());
         				break;
@@ -334,6 +344,8 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable{
         			case "202"://개설된 방의 타이틀 제목 얻기
         				chr.la_roominfo.setText("채팅방-["+msgs[1]+"]");
         				break;
+
+
         		}//클라이언트 switch
         	}
 

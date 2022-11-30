@@ -13,9 +13,8 @@ public class Server implements Runnable{
 		//Vector<ChatService> waitV; //대기실 사용자     
 		Vector<Room> roomV; //개설된 대화방 Room-vs(Vector) : 대화방사용자
 
-		public Server() { 
+	public Server() {
 			//allV = new Vector<>(); 
-			//waitV = new Vector<>(); 
 			roomV = new Vector<>();
 			//Thread t = new Thread(run메소드의 위치);  
 			//t.start(); 
