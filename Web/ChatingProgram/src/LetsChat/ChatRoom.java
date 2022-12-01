@@ -58,54 +58,11 @@ public class ChatRoom extends JFrame{
 		bt_info = new JButton("정보");
 		bt_exit = new JButton("나가기");
 		
-		/*
-		cards = new JPanel(new CardLayout());
-		
-		card1 = new JPanel();
-		card1.setLayout(new GridBagLayout());
-		GridBagConstraints gbc=new GridBagConstraints();
-		gbc.fill=GridBagConstraints.BOTH;
-         //x,y축 다채움
-        //gbc.weightx=0.2;// 비율이 0.2:0.1이므로 버튼의 크기는 가로축으로 2배
-		gbc.weighty=0.1;
-        gbc.gridx=0;  
-        gbc.gridy=0;   //버튼이 두개로 0,0 기준으로 생성
-		la_roominfo.setHorizontalAlignment(JLabel.CENTER);
-		card1.add(la_roominfo,gbc);
-		
-		gbc.weighty=1;
-		gbc.gridx=0;  
-        gbc.gridy=0;   //버튼이 두개로 0,0 기준으로 생성
-		card1.add(ta_chat,gbc);
-		
-		gbc.weighty=0.15;
-		gbc.gridx=0;  
-        gbc.gridy=0;   //버튼이 두개로 0,0 기준으로 생성
-		card1.add(la_roominfo,gbc);
-		
-		card2 = new JPanel();
-		gbl2 = new GridBagLayout();
-		card2.setLayout(gbl2);
-		
-		
-		cards.add(card1,"Pannel1");
-		cards.add(card2, "Pannel2");
-		add(card1);
-		
-		CardLayout cl = (CardLayout) cards.getLayout();
-		bt_info.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cl.next(cards);
-			}
-			
-		});*/
-		
 		
 		p = new JPanel();
 		la_roominfo.setBounds(170,10,100,20); 
 		sp_ta.setBounds(10,30,340,450); 
 		sp_send.setBounds(10,490,265,60); 
-		//tf_sendmsg.setBounds(8,520,270,30); 
 		bt_send.setBounds(275, 490, 75, 60);
 
 		la_member.setBounds(370, 10, 100, 20);
@@ -118,7 +75,6 @@ public class ChatRoom extends JFrame{
 		p.add(sp_ta);
 		p.add(bt_send);
 		p.add(sp_send);
-		//p.add(tf_sendmsg);
 		p.add(la_member);
 		p.add(sp_list);
 		
@@ -130,11 +86,7 @@ public class ChatRoom extends JFrame{
 		setBounds(300,200,470,600);
 		//setDefaultCloseOperation(EXIT_ON_CLOSE); 
 
-		//setVisible(true);
 		ta_sendmsg.requestFocus();   
-		//tf_sendmsg.requestFocus();   
-		
-		
 	}
 
 }

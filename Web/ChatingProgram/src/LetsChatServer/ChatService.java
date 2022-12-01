@@ -20,6 +20,8 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 	Vector<Room> roomV; //개설된 대화방 Room-vs(Vector) : 대화방사용자      
 	Socket s;      
 	String nickName;      
+	Vector roomList = new Vector(); //채팅방 이름 벡터
+	
 	public ChatService(Socket s, Server server) {
 		//allV=server.allV;      
         roomV=server.roomV; 
@@ -53,16 +55,32 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 						case "160": //방만들기 (대화방 입장)  
 							String makemsg;
 							String inmsgs[]=msgs[1].split("♝");
-    						myRoom = new Room();          
-    						myRoom.title =inmsgs[0];//방제목     gg      
-    						myRoom.count = 1;          
-    						myRoom.boss = nickName;  
-    						myRoom.limitcount = Integer.parseInt(inmsgs[1]);
-    						myRoom.userV.add(this);  
-    						roomV.add(myRoom);                                
-    						messageRoom("200|"+nickName);//방인원에게 입장 알림  
-    						makemsg=myRoom.title+"♝"+myRoom.limitcount;
-    						messageTo("202|"+ makemsg);    
+							System.out.println(msgs[1]);
+							roomList.clear();
+							for(int i=0; i<roomV.size(); i++){
+								//"자바방--1,오라클방--1,JDBC방--1"
+								Room r= roomV.get(i);
+								roomList.add(r.title);
+							}
+							
+							int index = roomList.indexOf(inmsgs[0]); //검색
+							if(index != -1)
+							{
+								JOptionPane.showMessageDialog(null, "이미 사용중인 채팅방입니다. 다른 이름을 입력해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+							}
+							else {
+								roomList.add(inmsgs[0]);
+								myRoom = new Room();          
+	    						myRoom.title =inmsgs[0];//방제목         
+	    						myRoom.count = 1;          
+	    						myRoom.boss = nickName;  
+	    						myRoom.limitcount = Integer.parseInt(inmsgs[1]);
+	    						myRoom.userV.add(this);  
+	    						roomV.add(myRoom);                                
+	    						messageRoom("200|"+nickName);//방인원에게 입장 알림  
+	    						makemsg=myRoom.title+"♝"+myRoom.limitcount;
+	    						messageTo("202|"+ makemsg);  //채팅창 열기, 채팅방 정보전달
+							}
     						break;
             
     					case "175": //(대화방에서) 대화방 인원정보                
@@ -72,31 +90,35 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
             
     					case "200": //방들어가기 (대화방 입장) ----> 
     						String entermsg;
-    						//msgs[] = {"200","자바방"};   
     						System.out.println(msgs[1]);
     						int flag=0;
     						for(int i=0; i<roomV.size(); i++){//방이름 찾기!!                
     							Room r = roomV.get(i);                
-    							if(r.title.equals(msgs[1])){//일치하는 방 찾음!!
-    								myRoom = r;                
-    								myRoom.count++;//인원수 1증가     
-    								flag=1;
-    								break;                
+    							if(r.title.equals(msgs[1])){//일치하는 방 찾음!!  
+    								if(r.count<r.limitcount) {
+    									myRoom = r;  
+    									myRoom.count++;//인원수 1증가     
+    									flag=1;
+    									break;                
+    								}
+    								else {
+    									flag=2;
+    									JOptionPane.showMessageDialog(null, "수용 최대 인원을 초과하였습니다. 다른 채팅방을 이용해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+    								}
+    									
     							}               
     						}//for 
     						if(flag==1) {
     							myRoom.userV.add(this);                                
-        						messageRoom("200|"+nickName);
-        						//들어갈 방의 title전달           
+        						messageRoom("200|"+nickName);//채팅방인원들에게 입장알람    
         						entermsg=myRoom.title+"♝"+myRoom.limitcount;
-        						messageTo("202|"+ entermsg);
+        						messageTo("202|"+ entermsg); //채팅방정보 전달, 채팅창 열
     						}
-    						else
+    						else if(flag==0)
     						{
-    							JOptionPane.showMessageDialog(null, "채팅방이 존재하지 않습니다.");
+    							JOptionPane.showMessageDialog(null, "채팅방이 존재하지 않습니다.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
     						}                            
-    						break;               
-            
+    						break;     
     					case "300": //메시지                              
     						messageRoom("300|["+nickName +"]▶ "+msgs[1]);
     						//클라이언트에게 메시지 보내기                
@@ -124,11 +146,9 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 	        //"자바방--1,오라클방--1,JDBC방--1"  
 	        Room r= roomV.get(i);  
 	        str += r.title+"--"+r.count;  
-	        //if(i<roomV.size()-1)
 	        str += ",";   
 	    }   
-	    //System.out.println("server:"+str);
-	    return str;   //gg--4
+	    return str;  
 	}//getRoomInfo 	
 	
 	public String getRoomInwon(){//같은방의 인원정보               
@@ -139,7 +159,6 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 	        str += ser.nickName;      
 	        if(i<myRoom.userV.size()-1)str += ",";    
 	    }   
-	    //System.out.println("server"+str);
 	    return str;   
 	}//getRoomInwon 	
 	public void messageRoom(String msg){//대화방사용자    

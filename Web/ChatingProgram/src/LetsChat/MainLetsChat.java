@@ -137,7 +137,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 		try {
 
 			// Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-			socket = new Socket("10.101.15.103", 8888);// 연결시도
+			socket = new Socket("192.168.200.148", 8888);// 연결시도
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// in: 서버메시지 읽기객체 서버-----msg------>클라이언트
@@ -227,11 +227,11 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 			roomname = cr.tf_roomname.getText();
 			strpeople = cr.tf_people.getText();
 			if (roomname.equals("")) {
-				JOptionPane.showMessageDialog(null, "채방방 이름을 입력주세요", "ERROR MESSAGE", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "채방방 이름을 입력주세요", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			if (strpeople.equals("")) {
-				JOptionPane.showMessageDialog(null, "인원 수를 입력해주세요", "ERROR MESSAGE", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "인원 수를 입력해주세요", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			try {
@@ -247,15 +247,16 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 
 			chr.la_roominfo.setText(roomname + "(1/" + strpeople + ")");
 
-			sendMsg("175|");// 대화방내 인원정보 요청
+			//sendMsg("175|");// 대화방내 인원정보 요청
 
+			/*
 			setVisible(false);
 			cr.setVisible(false);
-			chr.setVisible(true); // 대화방이동
+			chr.setVisible(true); // 대화방이동*/
 		} else if (ob == er.bt_enter) {
 			roomname = er.tf_roomname.getText();
 			if (roomname.equals("")) {
-				JOptionPane.showMessageDialog(null, "채방방 이름을 입력주세요", "ERROR MESSAGE", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "채방방 이름을 입력주세요", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			//chr.la_roominfo.setText(roomname);// +"("+strpeople+")");
@@ -278,9 +279,6 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 			if (msg.length() > 0) {
 				msg = msg.replaceAll("(\r\n|\r|\n|\n\r)", "♝changline♝"); //줄바꿈 전송하기
 				sendMsg("300|" + msg);
-				// chr.ta_chat.append(msg);
-				// chr.ta_chat.setCaretPosition(chr.ta_chat.getText().length());
-				// chr.tf_sendmsg.setText("");
 				chr.ta_sendmsg.setText("");
 			}
 
@@ -308,10 +306,11 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 
 				case "300":
 					//채팅 여러줄 전송받기
-					//String smsgs=msgs[1].replaceAll("♝changline♝","\r\n");
 					String smsgs=msgs[1];
 					String chatmsgs[] = smsgs.split("♝changline♝");
-					int len = 7+chatmsgs[0].indexOf("▶");
+					int len = chatmsgs[0].indexOf("▶");
+					len=len+len/2;
+					System.out.println(len);
 					chr.ta_chat.append(chatmsgs[0] + "\n");
 					int i;
 					for(i=1; i<chatmsgs.length;i++)
@@ -341,15 +340,13 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 					chr.la_roominfo.setText(roomname +"("+nowppl+"/"+strpeople+")");  //채팅참가인원 재설정
 					chr.li_inwon.setListData(myRoomInwons);//채팅참가인원 리스트 재설정
 					break;
-
 				case "200":// 대화방 입장
-					chr.ta_chat.append("=========[" + msgs[1] + "]님 입장=========\n");
+					chr.ta_chat.append("============[" + msgs[1] + "]님 입장============\n");
 					chr.ta_chat.setCaretPosition(chr.ta_chat.getText().length());
 					break;
 
 				case "400":// 대화방 퇴장
-					chr.ta_chat.append("=========[" + msgs[1] + "]님 퇴장=========\n");
-					//chr.ta_chat.setText("");
+					chr.ta_chat.append("============[" + msgs[1] + "]님 퇴장============\n");
 					chr.ta_chat.setCaretPosition(chr.ta_chat.getText().length());
 					sendMsg("175|");// 대화방내 인원정보 요청
 					break;
@@ -360,9 +357,9 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 					strpeople = roominfomsgs[1];
 					sendMsg("175|");
 					setVisible(false);
+					cr.setVisible(false);
 					er.setVisible(false);
 					chr.setVisible(true);
-					//chr.la_roominfo.setText("채팅방-[" + msgs[1] + "]");
 					break;
 
 				}// 클라이언트 switch
