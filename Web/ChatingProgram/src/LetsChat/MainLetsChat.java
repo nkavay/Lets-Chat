@@ -133,7 +133,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 		try {
 
 			// Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-			socket = new Socket("172.30.1.76", 1600);// 연결시도
+			socket = new Socket("192.168.200.148", 8888);// 연결시도
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// in: 서버메시지 읽기객체 서버-----msg------>클라이언트
