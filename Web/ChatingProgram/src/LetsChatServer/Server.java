@@ -21,10 +21,11 @@ public class Server implements Runnable{
 		@Override public void run(){    
 			try 
 			{ 
-				ServerSocket ss = new ServerSocket(8888); //현재 실행중인 ip + 명시된 port ----> 소켓서비스   
+				ServerSocket ss = new ServerSocket(1600); //현재 실행중인 ip + 명시된 port ----> 소켓서비스   
 				System.out.println("Start Server.......");    
 				while(true){    
-					Socket s = ss.accept();//클라이언트 접속 대기     
+					Socket s = ss.accept();//클라이언트 접속 대기    
+					System.out.println("Accpted : " + s); 
 					//s: 접속한 클라이언트의 소켓정보    
 					ChatService cs = new ChatService(s, this);    
 					//allV.add(cs);//전체사용자에 등록    

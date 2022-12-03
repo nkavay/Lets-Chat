@@ -46,16 +46,19 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 					s.getInetAddress().getHostAddress());//서버에서 상황을 모니터!!                  
 		    		String msgs[]=msg.split("\\|");            
 		    		String protocol = msgs[0]; 
+		    		/*====================*/
+		    		System.out.println("protocol: " + protocol);
 		    		
 		    		switch(protocol){       
 						case "150": //대화명 입력                
-							nickName=msgs[1];                           
+							nickName=msgs[1]; 
+							//messageTo("151|"+ nickName);
 							//최초 대화명 입력했을때 대기실의 정보를 출력                                    
 							break;   
 						case "160": //방만들기 (대화방 입장)  
 							String makemsg;
-							String inmsgs[]=msgs[1].split("♝");
-							System.out.println(msgs[1]);
+							String inmsgs[]=msgs[1].split("!!");
+							System.out.println(inmsgs[1]);
 							roomList.clear();
 							for(int i=0; i<roomV.size(); i++){
 								//"자바방--1,오라클방--1,JDBC방--1"
@@ -66,6 +69,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 							int index = roomList.indexOf(inmsgs[0]); //검색
 							if(index != -1)
 							{
+								messageTo("700|used");
 								JOptionPane.showMessageDialog(null, "이미 사용중인 채팅방입니다. 다른 이름을 입력해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
 							}
 							else {
@@ -78,7 +82,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 	    						myRoom.userV.add(this);  
 	    						roomV.add(myRoom);                                
 	    						messageRoom("200|"+nickName);//방인원에게 입장 알림  
-	    						makemsg=myRoom.title+"♝"+myRoom.limitcount;
+	    						makemsg=myRoom.title+"!!"+myRoom.limitcount;
 	    						messageTo("202|"+ makemsg);  //채팅창 열기, 채팅방 정보전달
 							}
     						break;
@@ -103,6 +107,9 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
     								}
     								else {
     									flag=2;
+    									/*==============================추가=============*/
+    	    							messageTo("700|full");
+    	    							/*==============================추가=============*/
     									JOptionPane.showMessageDialog(null, "수용 최대 인원을 초과하였습니다. 다른 채팅방을 이용해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
     								}
     									
@@ -111,16 +118,19 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
     						if(flag==1) {
     							myRoom.userV.add(this);                                
         						messageRoom("200|"+nickName);//채팅방인원들에게 입장알람    
-        						entermsg=myRoom.title+"♝"+myRoom.limitcount;
+        						entermsg=myRoom.title+"!!"+myRoom.limitcount;
         						messageTo("202|"+ entermsg); //채팅방정보 전달, 채팅창 열
     						}
     						else if(flag==0)
     						{
+    							/*==============================추가=============*/
+    							messageTo("700|none");
+    							/*==============================추가=============*/
     							JOptionPane.showMessageDialog(null, "채팅방이 존재하지 않습니다.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
     						}                            
     						break;     
     					case "300": //메시지                              
-    						messageRoom("300|["+nickName +"]▶ "+msgs[1]);
+    						messageRoom("300|["+nickName +"]>> "+msgs[1]);
     						//클라이언트에게 메시지 보내기                
     						break;           
             

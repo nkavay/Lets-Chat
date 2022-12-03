@@ -125,10 +125,6 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 
 		connect();// 서버연결시도 (in,out객체생성)
 		new Thread(this).start();// 서버메시지 대기
-		// String nickName =
-		// tf_username.getText();//JOptionPane.showInputDialog(this,"대화명:");
-		// System.out.println(nickName);
-
 		eventUp();
 
 	}
@@ -137,7 +133,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 		try {
 
 			// Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-			socket = new Socket("192.168.200.148", 8888);// 연결시도
+			socket = new Socket("172.30.1.76", 1600);// 연결시도
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// in: 서버메시지 읽기객체 서버-----msg------>클라이언트
@@ -161,7 +157,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-
+   
 		}
 
 	}// sendMsg
@@ -180,8 +176,6 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 		er.bt_enter.addActionListener(this);
 
 		// 대화방(ChatClient)
-		//chr.ta_sendmsg.addActionListener(this);
-		//chr.tf_sendmsg.addActionListener(this);
 		chr.bt_send.addActionListener(this);
 		chr.bt_exit.addActionListener(this);
 
@@ -190,21 +184,12 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 	public void actionPerformed(ActionEvent e) {
 
 		Object ob = e.getSource();
-		//String roomname;
-		//String strpeople;
 		String nickName;
 		nickName = tf_username.getText();
 		if (ob == bt_exit) {// 나가기(프로그램종료) 요청
 			try {
-				/*
-				 * if (in != null) in.close(); if (socket != null) socket.close();
-				 */
 				System.exit(0);
-
-			} /*
-				 * catch (IOException ie) { System.out.println("IO Stream 예외처리 : " +
-				 * ie.getMessage()); }
-				 */catch (Exception e1) {
+			} catch (Exception e1) {
 				System.out.println("Close 예외처리 : " + e1.getMessage());
 			} finally {
 				System.exit(0);
@@ -218,7 +203,6 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 			sendMsg("150|" + nickName);// 대화명 전달
 			System.out.println(tf_username.getText());
 			cr.setVisible(true);
-			// String title = JOptionPane.showInputDialog(this,"방제목:");
 		} else if (ob == bt_renter) {// 방들어가기 요청
 			sendMsg("150|" + nickName);// 대화명 전달
 			er.setVisible(true);
@@ -240,33 +224,24 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 			} catch (NumberFormatException ex) {
 				ex.printStackTrace();
 			}
-			String msg = roomname+"♝"+strpeople;
+			String msg = roomname+"!!"+strpeople;
 			System.out.println(roomname);
 			sendMsg("150|" + nickName);// 대화명 전달
 			sendMsg("160|" + msg);
 
 			chr.la_roominfo.setText(roomname + "(1/" + strpeople + ")");
 
-			//sendMsg("175|");// 대화방내 인원정보 요청
 
-			/*
-			setVisible(false);
-			cr.setVisible(false);
-			chr.setVisible(true); // 대화방이동*/
 		} else if (ob == er.bt_enter) {
 			roomname = er.tf_roomname.getText();
 			if (roomname.equals("")) {
 				JOptionPane.showMessageDialog(null, "채방방 이름을 입력주세요", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			//chr.la_roominfo.setText(roomname);// +"("+strpeople+")");
 			sendMsg("150|" + nickName);// 대화명 전달
 			sendMsg("200|" + roomname);
 			//sendMsg("175|");// 대화방내 인원정보 요청
 
-			//setVisible(false);
-			//er.setVisible(false);
-			//chr.setVisible(true);
 		} else if (ob == chr.bt_exit) {// 대화방 나가기 요청
 			sendMsg("400|");
 			chr.ta_chat.setText("");
@@ -277,7 +252,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 			String msg = chr.ta_sendmsg.getText();// chr.tf_sendmsg.getText();
 
 			if (msg.length() > 0) {
-				msg = msg.replaceAll("(\r\n|\r|\n|\n\r)", "♝changline♝"); //줄바꿈 전송하기
+				msg = msg.replaceAll("(\r\n|\r|\n|\n\r)", "!!changline!!"); //줄바꿈 전송하기
 				sendMsg("300|" + msg);
 				chr.ta_sendmsg.setText("");
 			}
@@ -307,8 +282,10 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 				case "300":
 					//채팅 여러줄 전송받기
 					String smsgs=msgs[1];
-					String chatmsgs[] = smsgs.split("♝changline♝");
-					int len = chatmsgs[0].indexOf("▶");
+					System.out.println(smsgs);
+					String chatmsgs[] = smsgs.split("!!changline!!");
+					//int len = chatmsgs[0].indexOf("▶");
+					int len = chatmsgs[0].indexOf(">>");
 					len=len+len/2;
 					System.out.println(len);
 					chr.ta_chat.append(chatmsgs[0] + "\n");
@@ -352,7 +329,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 					break;
 
 				case "202":// 개설된 방의 타이틀 제목 얻기
-					String roominfomsgs[]=msgs[1].split("♝");
+					String roominfomsgs[]=msgs[1].split("!!");
 					roomname = roominfomsgs[0];
 					strpeople = roominfomsgs[1];
 					sendMsg("175|");
