@@ -133,9 +133,9 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 		try {
 
 			// Socket s = new Socket(String host<서버ip>, int port<서비스번호>);
-			socket = new Socket("192.168.200.148", 8888);// 연결시도
+			socket = new Socket("172.30.1.76", 8888);// 연결시도
 
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			// in: 서버메시지 읽기객체 서버-----msg------>클라이언트
 
 			out = socket.getOutputStream();
@@ -153,7 +153,7 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 	public void sendMsg(String msg) {// 서버에게 메시지 보내기
 
 		try {
-			out.write((msg + "\n").getBytes());
+			out.write((msg + "\n").getBytes("UTF-8"));
 
 		} catch (IOException e) {
 			e.printStackTrace();

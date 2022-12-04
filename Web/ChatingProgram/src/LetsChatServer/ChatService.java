@@ -27,7 +27,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
         roomV=server.roomV; 
 		this.s=s;
 		try {  
-        	in = new BufferedReader(new InputStreamReader(s.getInputStream())); 
+        	in = new BufferedReader(new InputStreamReader(s.getInputStream(), "UTF-8")); 
             out = s.getOutputStream();
 			start();   
         } catch (IOException e) { 
@@ -184,7 +184,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 	}//messageAll  
 	
 	public void messageTo(String msg) throws IOException{//특정 클라이언트에게 메시지 전달 (실제 서버--->클라이언트 메시지 전달)    
-    	out.write((msg+"\n").getBytes());   
+    	out.write((msg+"\n").getBytes("UTF-8"));   
     }	
 		
 	
