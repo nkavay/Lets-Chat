@@ -70,7 +70,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
 							if(index != -1)
 							{
 								messageTo("700|used");
-								JOptionPane.showMessageDialog(null, "이미 사용중인 채팅방입니다. 다른 이름을 입력해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+								//JOptionPane.showMessageDialog(null, "이미 사용중인 채팅방입니다. 다른 이름을 입력해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
 							}
 							else {
 								roomList.add(inmsgs[0]);
@@ -110,7 +110,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
     									/*==============================추가=============*/
     	    							messageTo("700|full");
     	    							/*==============================추가=============*/
-    									JOptionPane.showMessageDialog(null, "수용 최대 인원을 초과하였습니다. 다른 채팅방을 이용해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+    									//JOptionPane.showMessageDialog(null, "수용 최대 인원을 초과하였습니다. 다른 채팅방을 이용해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
     								}
     									
     							}               
@@ -126,7 +126,7 @@ public class ChatService extends Thread{  //ChatService == 접속 클라이언�
     							/*==============================추가=============*/
     							messageTo("700|none");
     							/*==============================추가=============*/
-    							JOptionPane.showMessageDialog(null, "채팅방이 존재하지 않습니다.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+    							//JOptionPane.showMessageDialog(null, "채팅방이 존재하지 않습니다.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
     						}                            
     						break;     
     					case "300": //메시지                              

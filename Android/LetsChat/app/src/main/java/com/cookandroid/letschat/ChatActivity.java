@@ -110,13 +110,11 @@ public class ChatActivity extends AppCompatActivity {
         // 프로토콜별 실행처리
         @Override
         public void run() {
-            // msg==> "300|안녕하세요" "160|자바방--1,오라클방--1,JDBC방--1"
             String msgs[] = msg.split("\\|");
             String protocol = msgs[0];
 
             switch (protocol) {
-                case "300":
-                    //채팅 여러줄 전송받기
+                case "300"://채팅 전송받기
                     String smsgs = msgs[1];
                     String chatmsgs[] = smsgs.split("!!changline!!");
 
@@ -159,22 +157,22 @@ public class ChatActivity extends AppCompatActivity {
                     new Thread(() -> sendMsg("175|")).start();
                     break;
 
-                case "700":
-                    String warningMsg = "\" is not found.";
+                case "700":// 채팅방 에러 처리
+                    String warningMsg = "\"이 존재하지 않습니다.";
                     if(msgs[1].equals("full")){
-                        warningMsg = "\" is already full.";
+                        warningMsg = "\"의 수용 최대 인원을 초과하였습니다.\n다른 채팅방을 이용해주세요.";
                     } else if(msgs[1].equals("used")){
-                        warningMsg = "\" is already used.";
+                        warningMsg = "\"이 이미 사용중입니다.";
                     }
 
                     new AlertDialog.Builder(ChatActivity.this)
                             .setTitle("warning")
-                            .setMessage("Room named \"" + roomname + warningMsg)
+                            .setMessage("채팅방 \"" + roomname + warningMsg)
                             .setPositiveButton("ok", (dialogInterface, i1) -> finish())
                             .setCancelable(false)
                             .create()
                             .show();
-            }   // 클라이언트 switch
+            }
         }
     }
 
@@ -191,6 +189,7 @@ public class ChatActivity extends AppCompatActivity {
             if(type == 1) sendMsg("160|" + roomname + "!!" + headcount);
             else if(type == 2) sendMsg("200|" + roomname);
 
+            // 서버로부터 전송받은 메시지 실시간으로 읽기
             while(true) {
                 String read = in.readLine();
                 if(!read.isEmpty()){
@@ -208,7 +207,6 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMsg(String msg){
         try {
             out.write((msg + "\n").getBytes("UTF-8"));
-            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -236,7 +234,7 @@ public class ChatActivity extends AppCompatActivity {
             for(i=roomCandi.length; i<headcountBe; i++){
                 subMenu.removeItem(i);
             }
-        } else {    // 인원이 같을 경우
+        } else { // 인원이 같을 경우
             for(i=0; i<roomCandi.length; i++){
                 subMenu.getItem(i).setTitle(roomCandi[i]);
             }

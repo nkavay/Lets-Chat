@@ -338,6 +338,15 @@ public class MainLetsChat extends JFrame implements ActionListener, Runnable {
 					er.setVisible(false);
 					chr.setVisible(true);
 					break;
+					
+				case "700":// 채팅방 에러 처리
+                    if(msgs[1].equals("full")){
+                    	JOptionPane.showMessageDialog(null, "이미 사용중인 채팅방입니다. 다른 이름을 입력해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+                    } else if(msgs[1].equals("used")){
+                    	JOptionPane.showMessageDialog(null, "수용 최대 인원을 초과하였습니다. 다른 채팅방을 이용해주세요.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                    	JOptionPane.showMessageDialog(null, "채팅방이 존재하지 않습니다.", "WARNING MESSAGE", JOptionPane.WARNING_MESSAGE);
+                    }
 
 				}// 클라이언트 switch
 			}
