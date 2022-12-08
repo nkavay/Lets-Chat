@@ -1,4 +1,4 @@
-package LetsChat;
+package LetsChatServer;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -23,8 +23,7 @@ public class ChatRoom extends JFrame{
 	
 	//채팅방
     JTextField tf_sendmsg;
-    JLabel la_member;
-	JLabel la_roominfo;
+    JLabel la_member,la_roominfo;
 	JTextArea ta_chat,ta_sendmsg;
 	JScrollPane sp_ta,sp_list,sp_send;    
 	JList<String> li_member;
@@ -35,9 +34,12 @@ public class ChatRoom extends JFrame{
 	
 	GridBagLayout gbl1, gbl2;
 	
-
+	String clientIP="";
+	String clientNickname="";
 	
-	public ChatRoom() {
+	public ChatRoom(Socket socket) {
+		
+		clientIP = socket.getInetAddress().getHostAddress();
 		setTitle("채팅방");
 		
 		la_roominfo = new JLabel("채팅방"); //채팅방 제목 
@@ -62,12 +64,12 @@ public class ChatRoom extends JFrame{
 		p = new JPanel();
 		
 		la_roominfo.setBounds(170,10,100,20); 
-		sp_ta.setBounds(10,30,340,450); 
+		sp_ta.setBounds(10,30,450,450); 
 		sp_send.setBounds(10,490,265,60); 
 		bt_send.setBounds(275, 490, 75, 60);
 
-		la_member.setBounds(370, 10, 100, 20);
-		sp_list.setBounds(360,30,100,450); 
+		//la_member.setBounds(370, 10, 100, 20);
+		//sp_list.setBounds(360,30,100,450); 
 		bt_exit.setBounds(360,490,100,60); 
 		
 		p.setLayout(null);

@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 public class CreateRoom extends JFrame {
 
 	JLabel la_roomname, la_people, la_blank;
@@ -37,17 +38,20 @@ public class CreateRoom extends JFrame {
     
 	public CreateRoom() {
 		
-		setTitle("Let's Chat: 채팅방 만들기");
+		setTitle("Let's Chat: 채팅방 만들기"); //채팅방 생성창 title
 		
 		la_roomname = new JLabel("채팅방 이름");
 		la_roomname.setFont(new Font("SanSerif",Font.BOLD,15));
-		tf_roomname = new JTextField(15);
+		tf_roomname = new JTextField(15); //채팅방 이름 입력창 
+		
 		la_people = new JLabel("인원 수");
 		la_people.setFont(new Font("SanSerif",Font.BOLD,15));
-		tf_people = new JTextField(10);
-		id = new IntegerDocument();
-		tf_people.setDocument(id);
-		bt_create = new JButton("생성하기");
+		tf_people = new JTextField(10); //채팅방 인원수 입력창
+		
+		id = new IntegerDocument(); 
+		tf_people.setDocument(id); //입력받은 인원수가 숫자인지 아닌지 확인
+		
+		bt_create = new JButton("생성하기"); //채팅방 생성 버튼
 		la_blank = new JLabel("");
 		
 		
@@ -77,7 +81,7 @@ public class CreateRoom extends JFrame {
        
 	    
         this.pack();
-        this.getContentPane().setBackground(Color.orange);
+		this.getContentPane().setBackground(new Color(186,134,252));
         setBounds(300,200, 300, 300);
 	}
 }

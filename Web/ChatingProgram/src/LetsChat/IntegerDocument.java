@@ -3,6 +3,7 @@ package LetsChat;
 /* IntegerDocument 클래스 */
 import javax.swing.text.*;
 
+//입력받은 문자가 숫자인지 판별 
 public class IntegerDocument extends PlainDocument {
 
 	int currentValue = 0;
